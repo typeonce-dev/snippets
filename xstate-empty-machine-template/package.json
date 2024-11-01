@@ -1,0 +1,10 @@
+{
+  "author": "Sandro Maglione <sandro@sandromaglione.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "xstate": "^5.18.2"
+  }
+}
