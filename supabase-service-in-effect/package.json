@@ -1,0 +1,14 @@
+{
+  "author": "Sandro Maglione <sandro@sandromaglione.com>",
+  "license": "MIT",
+  "scripts": {
+    "db-types": "supabase gen types typescript --project-id <project_id> --schema public > database/database.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",
+    "effect": "^3.10.8"
+  }
+}
