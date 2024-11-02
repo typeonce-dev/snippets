@@ -1,0 +1,116 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@effect/platform':
+        specifier: ^0.69.13
+        version: 0.69.13(effect@3.10.8)
+      '@effect/rpc':
+        specifier: ^0.44.13
+        version: 0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
+      '@effect/rpc-http':
+        specifier: ^0.42.13
+        version: 0.42.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
+      effect:
+        specifier: ^3.10.8
+        version: 3.10.8
+    devDependencies:
+      '@types/node':
+        specifier: ^22.8.6
+        version: 22.8.6
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+
+packages:
+
+  '@effect/platform@0.69.13':
+    resolution: {integrity: sha512-uC0SWf64mBxyy3LfzzjFPuicfr4CtKikqOkiLyPPqcXRb9DxcY0BH79bv+VSlfxdCSUDaZvPi39yPQEKZ3IRZQ==}
+    peerDependencies:
+      effect: ^3.10.8
+
+  '@effect/rpc-http@0.42.13':
+    resolution: {integrity: sha512-AuN0s4zjw7zlraJtg/jm3ylPe8eurKgYZdseZAm64kYpyMAIh/wd9eyKWCzjBrtRcWtpOAP4wAEI6e8OQnJD4Q==}
+    peerDependencies:
+      '@effect/platform': ^0.69.13
+      effect: ^3.10.8
+
+  '@effect/rpc@0.44.13':
+    resolution: {integrity: sha512-B+XF3fSkhkcAdhHiv/v91PtEpIM/paULmeN3gEBImSr7awlDAQpH6QKSadnJyrxOg9D0TjC1j/KryDTUWEaM+w==}
+    peerDependencies:
+      '@effect/platform': ^0.69.13
+      effect: ^3.10.8
+
+  '@types/node@22.8.6':
+    resolution: {integrity: sha512-tosuJYKrIqjQIlVCM4PEGxOmyg3FCPa/fViuJChnGeEIhjA46oy8FMVoF9su1/v8PNs2a8Q0iFNyOx0uOF91nw==}
+
+  effect@3.10.8:
+    resolution: {integrity: sha512-vCKKp7EL6j7x1xfBbmndcQvooNE5FEDxkVro2yqEGBR2Ogn4I4XVK5A4eLVlDxS9egvX7EFaBwDRfm7k6IM6oA==}
+
+  fast-check@3.23.0:
+    resolution: {integrity: sha512-TmpgSeJ2jUV+FNWnSy9iIE9bOV9nCNQ4it+K9BpCNT9JsQOfZYznWGSbMw+Wa4uusEss0IcL/trFVoRxS6IuAA==}
+    engines: {node: '>=8.0.0'}
+
+  find-my-way-ts@0.1.5:
+    resolution: {integrity: sha512-4GOTMrpGQVzsCH2ruUn2vmwzV/02zF4q+ybhCIrw/Rkt3L8KWcycdC6aJMctJzwN4fXD4SD5F/4B9Sksh5rE0A==}
+
+  multipasta@0.2.5:
+    resolution: {integrity: sha512-c8eMDb1WwZcE02WVjHoOmUVk7fnKU/RmUcosHACglrWAuPQsEJv+E8430sXj6jNc1jHw0zrS16aCjQh4BcEb4A==}
+
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
+  typescript@5.6.3:
+    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+snapshots:
+
+  '@effect/platform@0.69.13(effect@3.10.8)':
+    dependencies:
+      effect: 3.10.8
+      find-my-way-ts: 0.1.5
+      multipasta: 0.2.5
+
+  '@effect/rpc-http@0.42.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)':
+    dependencies:
+      '@effect/platform': 0.69.13(effect@3.10.8)
+      '@effect/rpc': 0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
+      effect: 3.10.8
+
+  '@effect/rpc@0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)':
+    dependencies:
+      '@effect/platform': 0.69.13(effect@3.10.8)
+      effect: 3.10.8
+
+  '@types/node@22.8.6':
+    dependencies:
+      undici-types: 6.19.8
+
+  effect@3.10.8:
+    dependencies:
+      fast-check: 3.23.0
+
+  fast-check@3.23.0:
+    dependencies:
+      pure-rand: 6.1.0
+
+  find-my-way-ts@0.1.5: {}
+
+  multipasta@0.2.5: {}
+
+  pure-rand@6.1.0: {}
+
+  typescript@5.6.3: {}
+
+  undici-types@6.19.8: {}
