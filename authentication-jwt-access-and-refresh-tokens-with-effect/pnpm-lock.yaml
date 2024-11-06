@@ -1,0 +1,111 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@effect/platform':
+        specifier: ^0.69.18
+        version: 0.69.18(effect@3.10.12)
+      effect:
+        specifier: ^3.10.12
+        version: 3.10.12
+      jwt-decode:
+        specifier: ^4.0.0
+        version: 4.0.0
+      openapi-fetch:
+        specifier: ^0.13.0
+        version: 0.13.0
+    devDependencies:
+      '@types/node':
+        specifier: ^22.8.6
+        version: 22.9.0
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
+
+packages:
+
+  '@effect/platform@0.69.18':
+    resolution: {integrity: sha512-PU8bgY6J16UJyMrsVbvyYzgEFJe9/xFAF+LQUuBhNhUB/YVLtKQsD1odRTw/Rr+BTrIoZ0gN74naIoabLZVctw==}
+    peerDependencies:
+      effect: ^3.10.12
+
+  '@types/node@22.9.0':
+    resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
+
+  effect@3.10.12:
+    resolution: {integrity: sha512-+IqqTQS5+jM13qZHzfAX+RpCGOl0oBWIR7nec/zq76HyN/hdGQYnfr/LLLOVxUt8uIbckBea8rkwBKrQ0Hb/aA==}
+
+  fast-check@3.23.1:
+    resolution: {integrity: sha512-u/MudsoQEgBUZgR5N1v87vEgybeVYus9VnDVaIkxkkGP2jt54naghQ3PCQHJiogS8U/GavZCUPFfx3Xkp+NaHw==}
+    engines: {node: '>=8.0.0'}
+
+  find-my-way-ts@0.1.5:
+    resolution: {integrity: sha512-4GOTMrpGQVzsCH2ruUn2vmwzV/02zF4q+ybhCIrw/Rkt3L8KWcycdC6aJMctJzwN4fXD4SD5F/4B9Sksh5rE0A==}
+
+  jwt-decode@4.0.0:
+    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
+    engines: {node: '>=18'}
+
+  multipasta@0.2.5:
+    resolution: {integrity: sha512-c8eMDb1WwZcE02WVjHoOmUVk7fnKU/RmUcosHACglrWAuPQsEJv+E8430sXj6jNc1jHw0zrS16aCjQh4BcEb4A==}
+
+  openapi-fetch@0.13.0:
+    resolution: {integrity: sha512-6Nlf/BDbtyHwHdNrLPUiyt4CZMzL3ZyAt55yWH8W7+Z+8aYWnvca4uZHQHXViy8KcnCMqAhLM/bifh2Yjjkf6w==}
+
+  openapi-typescript-helpers@0.0.15:
+    resolution: {integrity: sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==}
+
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
+  typescript@5.6.3:
+    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+snapshots:
+
+  '@effect/platform@0.69.18(effect@3.10.12)':
+    dependencies:
+      effect: 3.10.12
+      find-my-way-ts: 0.1.5
+      multipasta: 0.2.5
+
+  '@types/node@22.9.0':
+    dependencies:
+      undici-types: 6.19.8
+
+  effect@3.10.12:
+    dependencies:
+      fast-check: 3.23.1
+
+  fast-check@3.23.1:
+    dependencies:
+      pure-rand: 6.1.0
+
+  find-my-way-ts@0.1.5: {}
+
+  jwt-decode@4.0.0: {}
+
+  multipasta@0.2.5: {}
+
+  openapi-fetch@0.13.0:
+    dependencies:
+      openapi-typescript-helpers: 0.0.15
+
+  openapi-typescript-helpers@0.0.15: {}
+
+  pure-rand@6.1.0: {}
+
+  typescript@5.6.3: {}
+
+  undici-types@6.19.8: {}
