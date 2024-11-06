@@ -1,5 +1,5 @@
 import { Cookies } from "@effect/platform";
-import { Effect, Either } from "effect";
+import { Effect } from "effect";
 import { cookies } from "next/headers";
 import { CookieToken } from "./cookie-token";
 
@@ -7,10 +7,9 @@ import { CookieToken } from "./cookie-token";
 const main = (nextCookies: Awaited<ReturnType<typeof cookies>>) =>
   Effect.gen(function* () {
     const cookieToken = yield* CookieToken;
-    const cookieList = yield* Either.all(
-      nextCookies
-        .getAll()
-        .map(({ name, value }) => Cookies.makeCookie(name, value))
+    const [, cookieList] = yield* Effect.partition(
+      nextCookies.getAll(),
+      ({ name, value }) => Cookies.makeCookie(name, value)
     );
 
     const cookies = Cookies.fromIterable(cookieList);
