@@ -5,18 +5,7 @@ import {
   HttpClientRequest,
   HttpClientResponse,
 } from "@effect/platform";
-import {
-  Config,
-  Context,
-  Data,
-  Effect,
-  Either,
-  flow,
-  Function,
-  Layer,
-  Option,
-  Schema,
-} from "effect";
+import { Config, Data, Effect, Either, flow, Option, Schema } from "effect";
 import { Jwt } from "./jwt";
 import { Token } from "./schema";
 
@@ -25,50 +14,38 @@ class CookieTokenError extends Data.TaggedError("CookieTokenError")<{
   cause?: unknown;
 }> {}
 
-export class CookieTokenKey extends Context.Tag("CookieTokenKey")<
-  CookieTokenKey,
-  { tokenKey: string }
->() {
-  static readonly Refresh = Layer.succeed(this, { tokenKey: "refresh-token" });
-  static readonly Access = Layer.succeed(this, { tokenKey: "access-token" });
-}
+const make = (tokenKey: string) =>
+  Effect.gen(function* () {
+    return {
+      remove: Cookies.remove(tokenKey),
 
-const make = Effect.gen(function* () {
-  const { tokenKey } = yield* CookieTokenKey;
-  return {
-    remove: Cookies.remove(tokenKey),
-    get: flow(
-      Cookies.get(tokenKey),
-      Option.flatMap((cookie) => Schema.decodeOption(Token)(cookie.value)),
-      Either.fromOption(() => new CookieTokenError({ reason: "invalid-token" }))
-    ),
-    set: (value: typeof Token.Type) =>
-      flow(
-        Cookies.set(tokenKey, value),
-        Either.mapLeft(
-          (cause) => new CookieTokenError({ reason: "invalid-token", cause })
+      get: flow(
+        Cookies.get(tokenKey),
+        Option.flatMap((cookie) => Schema.decodeOption(Token)(cookie.value)),
+        Either.fromOption(
+          () => new CookieTokenError({ reason: "invalid-token" })
         )
       ),
-  };
-});
 
-class AccessTokenCookie extends Context.Tag("AccessTokenCookie")<
-  AccessTokenCookie,
-  Effect.Effect.Success<typeof make>
->() {
-  static readonly Default = Layer.effect(this, make).pipe(
-    Layer.provide(CookieTokenKey.Access)
-  );
-}
+      set: (value: typeof Token.Type) =>
+        flow(
+          Cookies.set(tokenKey, value),
+          Either.mapLeft(
+            (cause) => new CookieTokenError({ reason: "invalid-token", cause })
+          )
+        ),
+    };
+  });
 
-class RefreshTokenCookie extends Context.Tag("RefreshTokenCookie")<
-  RefreshTokenCookie,
-  Effect.Effect.Success<typeof make>
->() {
-  static readonly Default = Layer.effect(this, make).pipe(
-    Layer.provide(CookieTokenKey.Refresh)
-  );
-}
+class AccessTokenCookie extends Effect.Service<AccessTokenCookie>()(
+  "AccessTokenCookie",
+  { accessors: true, effect: make("access-token") }
+) {}
+
+class RefreshTokenCookie extends Effect.Service<RefreshTokenCookie>()(
+  "RefreshTokenCookie",
+  { accessors: true, effect: make("refresh-token") }
+) {}
 
 export class CookieToken extends Effect.Service<CookieToken>()("CookieToken", {
   effect: Effect.gen(function* () {
@@ -76,6 +53,7 @@ export class CookieToken extends Effect.Service<CookieToken>()("CookieToken", {
     const accessTokenCookie = yield* AccessTokenCookie;
     const refreshTokenCookie = yield* RefreshTokenCookie;
 
+    // 👇 `HttpClient` to request updated tokens (using the refresh token)
     const baseUrl = yield* Config.string("API_BASE_URL");
     const client = (yield* HttpClient.HttpClient).pipe(
       HttpClient.mapRequest(
@@ -91,6 +69,7 @@ export class CookieToken extends Effect.Service<CookieToken>()("CookieToken", {
         const refreshToken = yield* refreshTokenCookie.get(cookies);
 
         const request = yield* HttpClientRequest.post(
+          // 👇 Endpoint to refresh the access token
           "/authentication/refresh-access-token"
         ).pipe(
           HttpClientRequest.schemaBodyJson(
@@ -113,15 +92,25 @@ export class CookieToken extends Effect.Service<CookieToken>()("CookieToken", {
           Effect.scoped
         );
 
-        yield* Effect.all([
-          accessTokenCookie.set(newTokens.accessToken)(cookies),
-          refreshTokenCookie.set(newTokens.refreshToken)(cookies),
-        ]);
+        yield* accessTokenCookie
+          .set(newTokens.accessToken)(cookies)
+          .pipe(
+            Either.andThen(
+              refreshTokenCookie.set(newTokens.refreshToken)(cookies)
+            )
+          );
 
         return newTokens;
       });
 
+    const remove = (cookies: Cookies.Cookies) =>
+      Effect.sync(() =>
+        accessTokenCookie.remove(cookies).pipe(refreshTokenCookie.remove)
+      );
+
     return {
+      remove,
+
       get: (cookies: Cookies.Cookies) =>
         Effect.gen(function* () {
           const accessToken = yield* accessTokenCookie.get(cookies);
@@ -133,26 +122,19 @@ export class CookieToken extends Effect.Service<CookieToken>()("CookieToken", {
             const newTokens = yield* refresh(cookies);
             return newTokens.accessToken;
           }
-        }),
+        }).pipe(
+          // ⚠️ If the token is invalid, remove the cookies
+          Effect.tapErrorTag("JwtInvalid", () => remove(cookies))
+        ),
 
-      set:
-        ({
-          accessToken,
-          refreshToken,
-        }: {
-          accessToken: typeof Token.Type;
-          refreshToken: typeof Token.Type;
-        }) =>
-        (cookies: Cookies.Cookies) =>
-          Effect.all([
-            accessTokenCookie.set(accessToken)(cookies),
-            refreshTokenCookie.set(refreshToken)(cookies),
-          ]).pipe(Effect.map(Function.constVoid)),
-
-      remove: (cookies: Cookies.Cookies) => {
-        accessTokenCookie.remove(cookies);
-        refreshTokenCookie.remove(cookies);
-      },
+      set: (newTokens: {
+        accessToken: typeof Token.Type;
+        refreshToken: typeof Token.Type;
+      }) =>
+        flow(
+          accessTokenCookie.set(newTokens.accessToken),
+          Either.andThen(refreshTokenCookie.set(newTokens.refreshToken))
+        ),
     };
   }),
   dependencies: [

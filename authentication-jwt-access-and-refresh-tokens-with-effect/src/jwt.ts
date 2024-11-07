@@ -2,7 +2,7 @@ import { Clock, Data, Effect, flow } from "effect";
 import { jwtDecode } from "jwt-decode";
 import type { Token } from "./schema";
 
-class JwtError extends Data.TaggedError("JwtError")<{
+class JwtInvalid extends Data.TaggedError("JwtInvalid")<{
   reason: "decode-error" | "missing-exp";
   cause?: unknown;
 }> {}
@@ -13,23 +13,21 @@ export class Jwt extends Effect.Service<Jwt>()("Jwt", {
       Effect.try({
         try: () => jwtDecode(token),
         catch: (error) =>
-          new JwtError({ reason: "decode-error", cause: error }),
+          new JwtInvalid({ reason: "decode-error", cause: error }),
       });
 
     return {
+      decode,
       isExpired: flow(
         decode,
         Effect.flatMap(({ exp }) =>
           Effect.fromNullable(exp).pipe(
-            Effect.mapError(() => new JwtError({ reason: "missing-exp" }))
+            Effect.mapError(() => new JwtInvalid({ reason: "missing-exp" }))
           )
         ),
         Effect.flatMap((exp) =>
           Effect.gen(function* () {
-            // `Clock` is included built-in in the default effect runtime
             const currentTime = yield* Clock.currentTimeMillis;
-
-            // Convert `exp` to milliseconds (it's stored in seconds)
             return currentTime > exp * 1000;
           })
         )
