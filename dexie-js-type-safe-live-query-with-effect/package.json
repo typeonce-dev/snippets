@@ -1,0 +1,16 @@
+{
+  "author": "Sandro Maglione <sandro@sandromaglione.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "dexie": "^4.0.10",
+    "dexie-react-hooks": "^1.1.7",
+    "effect": "^3.12.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
