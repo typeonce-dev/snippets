@@ -21,6 +21,8 @@ export class Dexie extends Effect.Service<Dexie>()("Dexie", {
     const db = new _Dexie.Dexie("_db") as _Dexie.Dexie & {
       // 👇 Extract table type from `Schema`
       activity: _Dexie.EntityTable<typeof ActivityTable.Encoded, "activityId">;
+
+      // ⚡️ TODO: Add all tables here (make sure to define the schema in `schema.ts`)
     };
 
     db.version(1).stores({
