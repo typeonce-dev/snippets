@@ -9,7 +9,7 @@ class DexieError extends Data.TaggedError("DexieError")<{
 }> {}
 class MissingData extends Data.TaggedError("MissingData")<{}> {}
 
-export const useQuery = <A, I>(
+export const useDexieQuery = <A, I>(
   query: (db: (typeof Dexie.Service)["db"]) => Promise<I[]>,
   schema: Schema.Schema<A, I>,
   deps: unknown[] = []

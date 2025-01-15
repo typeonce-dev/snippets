@@ -1,9 +1,9 @@
 import { ActivityTable } from "./schema";
-import { useQuery } from "./use-dexie-query";
+import { useDexieQuery } from "./use-dexie-query";
 
 export const useLiveActivities = () => {
   // 👇 Get data with validation with `Schema`
-  const { data, error, loading } = useQuery(
+  const { data, error, loading } = useDexieQuery(
     (_) => _.activity.toArray(),
     ActivityTable
   );
