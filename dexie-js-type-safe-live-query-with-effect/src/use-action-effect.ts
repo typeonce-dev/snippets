@@ -1,26 +1,31 @@
-import { Effect, Function, type ManagedRuntime } from "effect";
+import { Effect, type ManagedRuntime } from "effect";
 import { useActionState } from "react";
 import { CustomRuntime } from "./custom-runtime";
 
-export const useActionEffect = <A, E>(
+export const useActionEffect = <Payload, A, E>(
   effect: (
-    formData: FormData
+    payload: Payload
   ) => Effect.Effect<
     A,
     E,
     ManagedRuntime.ManagedRuntime.Context<typeof CustomRuntime>
   >
 ) => {
-  return useActionState(
-    (_: E | null, formData: FormData) =>
+  return useActionState<
+    | { error: E; data: null }
+    | { error: null; data: A }
+    | { error: null; data: null },
+    Payload
+  >(
+    (_, payload) =>
       CustomRuntime.runPromise(
-        effect(formData).pipe(
+        effect(payload).pipe(
           Effect.match({
-            onFailure: Function.identity,
-            onSuccess: Function.constNull,
+            onFailure: (error) => ({ error, data: null }),
+            onSuccess: (data) => ({ error: null, data }),
           })
         )
       ),
-    null
+    { error: null, data: null }
   );
 };

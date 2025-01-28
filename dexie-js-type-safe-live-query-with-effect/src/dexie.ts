@@ -17,6 +17,7 @@ const formDataToRecord = (formData: FormData): Record<string, string> => {
 };
 
 export class Dexie extends Effect.Service<Dexie>()("Dexie", {
+  accessors: true, // 👈 Enable accessors
   effect: Effect.gen(function* () {
     const db = new _Dexie.Dexie("_db") as _Dexie.Dexie & {
       // 👇 Extract table type from `Schema`
@@ -29,22 +30,37 @@ export class Dexie extends Effect.Service<Dexie>()("Dexie", {
       activity: "++activityId, &name",
     });
 
-    // 👇 Decode `FormData` and then validate using `Schema`
-    const execute =
-      <I, A, T>(schema: Schema.Schema<A, I>, exec: (values: I) => Promise<T>) =>
-      <const R extends string = never>(
-        source: Schema.Schema<I, Record<NoInfer<R>, string>>
+    // 👇 Action specific to decode `FormData`
+    const formAction =
+      <const R extends string, I, T>(
+        source: Schema.Schema<I, Record<R, string>>,
+        exec: (values: Readonly<I>) => Promise<T>
       ) =>
       (formData: FormData) =>
         // 1️⃣ Decode `FormData` to `Record<string, string>`
         Schema.decodeUnknown(source)(formDataToRecord(formData)).pipe(
-          // 2️⃣ Validate the decoded data with `Schema`
-          Effect.flatMap(Schema.decode(schema)),
-          Effect.flatMap(Schema.encode(schema)),
           Effect.mapError((error) => new WriteApiError({ cause: error })),
           Effect.flatMap((values) =>
             Effect.tryPromise({
-              // 3️⃣ Execute the query
+              // 2️⃣ Execute the query
+              try: () => exec(values),
+              catch: (error) => new WriteApiError({ cause: error }),
+            })
+          )
+        );
+
+    // 👇 Action for any data change
+    const changeAction =
+      <A, I, T>(
+        source: Schema.Schema<A, I>,
+        exec: (values: Readonly<A>) => Promise<T>
+      ) =>
+      (params: I) =>
+        Schema.decode(source)(params).pipe(
+          Effect.tap(Effect.log),
+          Effect.mapError((error) => new WriteApiError({ cause: error })),
+          Effect.flatMap((values) =>
+            Effect.tryPromise({
               try: () => exec(values),
               catch: (error) => new WriteApiError({ cause: error }),
             })
@@ -53,12 +69,24 @@ export class Dexie extends Effect.Service<Dexie>()("Dexie", {
 
     return {
       db, // 👈 Expose the `dexie` instance
-      insertActivity: execute(
+
+      insertActivity: formAction(
         // Schema to validate the input data (e.g. non-empty string)
         Schema.Struct({ name: Schema.NonEmptyString }),
 
         // 👇 Execute query to add data with `dexie`
         ({ name }) => db.activity.add({ name })
+      ),
+
+      updateActivity: changeAction(
+        // Schema to validate the input data (all sources are `string`!)
+        Schema.Struct({
+          activityId: Schema.NumberFromString.pipe(Schema.nonNegative()),
+          name: Schema.NonEmptyString,
+        }),
+
+        // 👇 Execute query to add data with `dexie`
+        ({ activityId, name }) => db.activity.update(activityId, { name })
       ),
     };
   }),
