@@ -79,13 +79,12 @@ export class Dexie extends Effect.Service<Dexie>()("Dexie", {
       ),
 
       updateActivity: changeAction(
-        // Schema to validate the input data (all sources are `string`!)
         Schema.Struct({
           activityId: Schema.NumberFromString.pipe(Schema.nonNegative()),
           name: Schema.NonEmptyString,
         }),
 
-        // 👇 Execute query to add data with `dexie`
+        // 👇 Execute query to update data with `dexie`
         ({ activityId, name }) => db.activity.update(activityId, { name })
       ),
     };
