@@ -9,31 +9,36 @@ import { useActionEffect } from "./use-action-effect";
 
 export const useInsertUser = () => {
   // 👇 Same return as `useActionState`
-  const [error, action, pending] = useActionEffect((fromData) =>
-    Effect.gen(function* () {
-      const baseClient = yield* HttpClient.HttpClient;
+  const [{ error, data }, action, pending] = useActionEffect(
+    (fromData: FormData) =>
+      Effect.gen(function* () {
+        const baseClient = yield* HttpClient.HttpClient;
 
-      const request = HttpClientRequest.post("/user/insert").pipe(
-        HttpClientRequest.bodyFormData(
-          // 👇 `HttpBody.formData` to create a `FormData` body
-          HttpBody.formData(fromData)
-        )
-      );
-
-      const response = yield* baseClient.execute(request).pipe(
-        Effect.flatMap(
-          // 👇 `HttpClientResponse.schemaBodyJson` to parse the response body
-          HttpClientResponse.schemaBodyJson(
-            Schema.Struct({ id: Schema.String })
+        const request = HttpClientRequest.post("/user/insert").pipe(
+          HttpClientRequest.bodyFormData(
+            // 👇 `HttpBody.formData` to create a `FormData` body
+            HttpBody.formData(fromData)
           )
-        ),
-        Effect.scoped
-      );
+        );
 
-      // 💁🏼‍♂️ This return value is not used with this implementation
-      return response.id;
-    })
+        const response = yield* baseClient.execute(request).pipe(
+          Effect.flatMap(
+            // 👇 `HttpClientResponse.schemaBodyJson` to parse the response body
+            HttpClientResponse.schemaBodyJson(
+              Schema.Struct({ id: Schema.String })
+            )
+          ),
+          Effect.scoped
+        );
+
+        // 💡 Type of `data` inferred from return value
+        return response.id;
+      })
   );
 
-  return [error, action, pending]; // 👈 Return what you need
+  // 👉 `error: HttpClientError | ParseError | null`
+  // 👉 `data: string | null`
+  //
+  // 👉 `action: (payload: FormData) => void`
+  return [error, action, pending, data] as const;
 };
