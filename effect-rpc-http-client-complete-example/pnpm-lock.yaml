@@ -9,17 +9,14 @@ importers:
   .:
     dependencies:
       '@effect/platform':
-        specifier: ^0.69.13
-        version: 0.69.13(effect@3.10.8)
+        specifier: ^0.80.2
+        version: 0.80.2(effect@3.14.2)
       '@effect/rpc':
-        specifier: ^0.44.13
-        version: 0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
-      '@effect/rpc-http':
-        specifier: ^0.42.13
-        version: 0.42.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
+        specifier: ^0.55.3
+        version: 0.55.3(@effect/platform@0.80.2(effect@3.14.2))(effect@3.14.2)
       effect:
-        specifier: ^3.10.8
-        version: 3.10.8
+        specifier: ^3.14.2
+        version: 3.14.2
     devDependencies:
       '@types/node':
         specifier: ^22.8.6
@@ -30,38 +27,80 @@ importers:
 
 packages:
 
-  '@effect/platform@0.69.13':
-    resolution: {integrity: sha512-uC0SWf64mBxyy3LfzzjFPuicfr4CtKikqOkiLyPPqcXRb9DxcY0BH79bv+VSlfxdCSUDaZvPi39yPQEKZ3IRZQ==}
+  '@effect/platform@0.80.2':
+    resolution: {integrity: sha512-6ymJkXpORrYASJrnXN7jCu11YLatTkIsqKNe0UYiXhNU4EnZ2H/VLrV/EOMdiBLpUZ44T/oF0NY4V40ZmjZ1ow==}
     peerDependencies:
-      effect: ^3.10.8
+      effect: ^3.14.2
 
-  '@effect/rpc-http@0.42.13':
-    resolution: {integrity: sha512-AuN0s4zjw7zlraJtg/jm3ylPe8eurKgYZdseZAm64kYpyMAIh/wd9eyKWCzjBrtRcWtpOAP4wAEI6e8OQnJD4Q==}
+  '@effect/rpc@0.55.3':
+    resolution: {integrity: sha512-KYI9vJj2WoA2fWAxd43E6KjzcFO1VEhNrCvD73D2V/SzLvfh9reXmsPw1pXhd3kbJ3swaxdHI6kgOyCr6HlC+w==}
     peerDependencies:
-      '@effect/platform': ^0.69.13
-      effect: ^3.10.8
+      '@effect/platform': ^0.80.2
+      effect: ^3.14.2
 
-  '@effect/rpc@0.44.13':
-    resolution: {integrity: sha512-B+XF3fSkhkcAdhHiv/v91PtEpIM/paULmeN3gEBImSr7awlDAQpH6QKSadnJyrxOg9D0TjC1j/KryDTUWEaM+w==}
-    peerDependencies:
-      '@effect/platform': ^0.69.13
-      effect: ^3.10.8
+  '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.3':
+    resolution: {integrity: sha512-QZHtlVgbAdy2zAqNA9Gu1UpIuI8Xvsd1v8ic6B2pZmeFnFcMWiPLfWXh7TVw4eGEZ/C9TH281KwhVoeQUKbyjw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@msgpackr-extract/msgpackr-extract-darwin-x64@3.0.3':
+    resolution: {integrity: sha512-mdzd3AVzYKuUmiWOQ8GNhl64/IoFGol569zNRdkLReh6LRLHOXxU4U8eq0JwaD8iFHdVGqSy4IjFL4reoWCDFw==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@msgpackr-extract/msgpackr-extract-linux-arm64@3.0.3':
+    resolution: {integrity: sha512-YxQL+ax0XqBJDZiKimS2XQaf+2wDGVa1enVRGzEvLLVFeqa5kx2bWbtcSXgsxjQB7nRqqIGFIcLteF/sHeVtQg==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@msgpackr-extract/msgpackr-extract-linux-arm@3.0.3':
+    resolution: {integrity: sha512-fg0uy/dG/nZEXfYilKoRe7yALaNmHoYeIoJuJ7KJ+YyU2bvY8vPv27f7UKhGRpY6euFYqEVhxCFZgAUNQBM3nw==}
+    cpu: [arm]
+    os: [linux]
+
+  '@msgpackr-extract/msgpackr-extract-linux-x64@3.0.3':
+    resolution: {integrity: sha512-cvwNfbP07pKUfq1uH+S6KJ7dT9K8WOE4ZiAcsrSes+UY55E/0jLYc+vq+DO7jlmqRb5zAggExKm0H7O/CBaesg==}
+    cpu: [x64]
+    os: [linux]
+
+  '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
+    resolution: {integrity: sha512-x0fWaQtYp4E6sktbsdAqnehxDgEc/VwM7uLsRCYWaiGu0ykYdZPiS8zCWdnjHwyiumousxfBm4SO31eXqwEZhQ==}
+    cpu: [x64]
+    os: [win32]
+
+  '@standard-schema/spec@1.0.0':
+    resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
   '@types/node@22.8.6':
     resolution: {integrity: sha512-tosuJYKrIqjQIlVCM4PEGxOmyg3FCPa/fViuJChnGeEIhjA46oy8FMVoF9su1/v8PNs2a8Q0iFNyOx0uOF91nw==}
 
-  effect@3.10.8:
-    resolution: {integrity: sha512-vCKKp7EL6j7x1xfBbmndcQvooNE5FEDxkVro2yqEGBR2Ogn4I4XVK5A4eLVlDxS9egvX7EFaBwDRfm7k6IM6oA==}
+  detect-libc@2.0.3:
+    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
+    engines: {node: '>=8'}
 
-  fast-check@3.23.0:
-    resolution: {integrity: sha512-TmpgSeJ2jUV+FNWnSy9iIE9bOV9nCNQ4it+K9BpCNT9JsQOfZYznWGSbMw+Wa4uusEss0IcL/trFVoRxS6IuAA==}
+  effect@3.14.2:
+    resolution: {integrity: sha512-AqLlvhkcWqSgfPnfGO/JdwvEqhtzFLb4qwe43YLwrvnN5ev2dqB4ve2Bv6oq64iplRMYO9lmYRibN0Ig6fK/nQ==}
+
+  fast-check@3.23.2:
+    resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
     engines: {node: '>=8.0.0'}
 
   find-my-way-ts@0.1.5:
     resolution: {integrity: sha512-4GOTMrpGQVzsCH2ruUn2vmwzV/02zF4q+ybhCIrw/Rkt3L8KWcycdC6aJMctJzwN4fXD4SD5F/4B9Sksh5rE0A==}
 
+  msgpackr-extract@3.0.3:
+    resolution: {integrity: sha512-P0efT1C9jIdVRefqjzOQ9Xml57zpOXnIuS+csaB4MdZbTdmGDLo8XhzBG1N7aO11gKDDkJvBLULeFTo46wwreA==}
+    hasBin: true
+
+  msgpackr@1.11.2:
+    resolution: {integrity: sha512-F9UngXRlPyWCDEASDpTf6c9uNhGPTqnTeLVt7bN+bU1eajoR/8V9ys2BRaV5C/e5ihE6sJ9uPIKaYt6bFuO32g==}
+
   multipasta@0.2.5:
     resolution: {integrity: sha512-c8eMDb1WwZcE02WVjHoOmUVk7fnKU/RmUcosHACglrWAuPQsEJv+E8430sXj6jNc1jHw0zrS16aCjQh4BcEb4A==}
+
+  node-gyp-build-optional-packages@5.2.2:
+    resolution: {integrity: sha512-s+w+rBWnpTMwSFbaE0UXsRlg7hU4FjekKU4eyAih5T8nJuNZT1nNsskXpxmeqSK9UzkBl6UgRlnKc8hz8IEqOw==}
+    hasBin: true
 
   pure-rand@6.1.0:
     resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
@@ -76,38 +115,78 @@ packages:
 
 snapshots:
 
-  '@effect/platform@0.69.13(effect@3.10.8)':
+  '@effect/platform@0.80.2(effect@3.14.2)':
     dependencies:
-      effect: 3.10.8
+      effect: 3.14.2
       find-my-way-ts: 0.1.5
+      msgpackr: 1.11.2
       multipasta: 0.2.5
 
-  '@effect/rpc-http@0.42.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)':
+  '@effect/rpc@0.55.3(@effect/platform@0.80.2(effect@3.14.2))(effect@3.14.2)':
     dependencies:
-      '@effect/platform': 0.69.13(effect@3.10.8)
-      '@effect/rpc': 0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)
-      effect: 3.10.8
+      '@effect/platform': 0.80.2(effect@3.14.2)
+      effect: 3.14.2
 
-  '@effect/rpc@0.44.13(@effect/platform@0.69.13(effect@3.10.8))(effect@3.10.8)':
-    dependencies:
-      '@effect/platform': 0.69.13(effect@3.10.8)
-      effect: 3.10.8
+  '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.3':
+    optional: true
+
+  '@msgpackr-extract/msgpackr-extract-darwin-x64@3.0.3':
+    optional: true
+
+  '@msgpackr-extract/msgpackr-extract-linux-arm64@3.0.3':
+    optional: true
+
+  '@msgpackr-extract/msgpackr-extract-linux-arm@3.0.3':
+    optional: true
+
+  '@msgpackr-extract/msgpackr-extract-linux-x64@3.0.3':
+    optional: true
+
+  '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.3':
+    optional: true
+
+  '@standard-schema/spec@1.0.0': {}
 
   '@types/node@22.8.6':
     dependencies:
       undici-types: 6.19.8
 
-  effect@3.10.8:
-    dependencies:
-      fast-check: 3.23.0
+  detect-libc@2.0.3:
+    optional: true
 
-  fast-check@3.23.0:
+  effect@3.14.2:
+    dependencies:
+      '@standard-schema/spec': 1.0.0
+      fast-check: 3.23.2
+
+  fast-check@3.23.2:
     dependencies:
       pure-rand: 6.1.0
 
   find-my-way-ts@0.1.5: {}
 
+  msgpackr-extract@3.0.3:
+    dependencies:
+      node-gyp-build-optional-packages: 5.2.2
+    optionalDependencies:
+      '@msgpackr-extract/msgpackr-extract-darwin-arm64': 3.0.3
+      '@msgpackr-extract/msgpackr-extract-darwin-x64': 3.0.3
+      '@msgpackr-extract/msgpackr-extract-linux-arm': 3.0.3
+      '@msgpackr-extract/msgpackr-extract-linux-arm64': 3.0.3
+      '@msgpackr-extract/msgpackr-extract-linux-x64': 3.0.3
+      '@msgpackr-extract/msgpackr-extract-win32-x64': 3.0.3
+    optional: true
+
+  msgpackr@1.11.2:
+    optionalDependencies:
+      msgpackr-extract: 3.0.3
+
   multipasta@0.2.5: {}
+
+  node-gyp-build-optional-packages@5.2.2:
+    dependencies:
+      detect-libc: 2.0.3
+    optional: true
 
   pure-rand@6.1.0: {}
 

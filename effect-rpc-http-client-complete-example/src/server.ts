@@ -1,8 +1,7 @@
 import { HttpApp } from "@effect/platform";
-import { Rpc, RpcRouter } from "@effect/rpc";
-import { HttpRpcRouterNoStream } from "@effect/rpc-http";
-import { Effect, Logger } from "effect";
-import { SignUpRequest } from "./schema";
+import { RpcSerialization, RpcServer } from "@effect/rpc";
+import { Effect, Layer, Logger } from "effect";
+import { RpcAuth } from "./api";
 
 // 👇 Example of added custom logger (as `Layer`)
 export const LoggerLayer = Logger.add(
@@ -11,21 +10,17 @@ export const LoggerLayer = Logger.add(
   })
 );
 
-const router = RpcRouter.make(
-  Rpc.effect(SignUpRequest, (params) =>
+const RpcAuthLayer = RpcAuth.toLayer({
+  SignUpRequest: (params) =>
     Effect.gen(function* () {
-      // 👇 `params` contains the `TaggedRequest` payload
+      // 👇 `params` contains the payload defined in `Rpc.make`
       yield* Effect.log(params.email, params.password);
       return true;
-    })
-  )
-);
+    }),
+}).pipe(Layer.provide(LoggerLayer));
 
-// 👇 Export `Router` type for client generation
-export type Router = typeof router;
-
-export const RpcWebHandler = HttpApp.toWebHandlerLayer(
-  HttpRpcRouterNoStream.toHttpApp(router),
-  // 👇 Provide layers used in requests
-  LoggerLayer
+export const RpcWebHandler = RpcServer.toHttpApp(RpcAuth).pipe(
+  // 👇 Convert to `Request`/`Response` handler
+  Effect.map(HttpApp.toWebHandler),
+  Effect.provide([RpcAuthLayer, RpcSerialization.layerNdjson])
 );

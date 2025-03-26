@@ -1,47 +1,38 @@
-import {
-  FetchHttpClient,
-  HttpClient,
-  HttpClientRequest,
-} from "@effect/platform";
-import { RpcResolver } from "@effect/rpc";
-import { HttpRpcResolverNoStream } from "@effect/rpc-http";
-import { Effect, flow } from "effect";
+import { FetchHttpClient } from "@effect/platform";
+import { RpcClient, RpcSerialization } from "@effect/rpc";
+import { Effect, Layer } from "effect";
 
-// 👇 API derived from `Router` defined in the server
-import { SignUpRequest } from "./schema";
-import type { Router } from "./server";
+// 👇 Rpc API group shared between server and client
+import { RpcAuth } from "./api";
 
-export class RpcClient extends Effect.Service<RpcClient>()("RpcClient", {
-  effect: Effect.gen(function* () {
-    const baseClient = yield* HttpClient.HttpClient;
-    const client = baseClient.pipe(
-      HttpClient.mapRequest(
-        // 👇 Rpc endpoint as `POST` pointing to a single API endpoint
-        flow(
-          HttpClientRequest.prependUrl("/api/rpc"),
-          HttpClientRequest.setMethod("POST")
-        )
-      )
-    );
+const ProtocolLive = RpcClient.layerProtocolHttp({
+  url: "/api/rpc",
+}).pipe(Layer.provide([FetchHttpClient.layer, RpcSerialization.layerNdjson]));
 
-    return HttpRpcResolverNoStream.make<Router>(client).pipe(
-      RpcResolver.toClient
-    );
-  }),
-  dependencies: [FetchHttpClient.layer],
-}) {}
+export class RpcAuthClient extends Effect.Service<RpcAuthClient>()(
+  "RpcAuthClient",
+  {
+    dependencies: [ProtocolLive],
+    effect: RpcClient.make(RpcAuth).pipe(Effect.scoped),
+  }
+) {}
 
-/// 👇 Example of how to use `RpcClient` to perform requests
+/// 👇 Example of how to use `RpcAuthClient` to perform requests
 const main = Effect.gen(function* () {
-  const rpcClient = yield* RpcClient;
+  const client = yield* RpcAuthClient;
 
-  //   👇 `boolean`
-  const response = yield* rpcClient(
-    new SignUpRequest({
+  //   👇 `boolean` (as defined in `Rpc.make`)
+  const response = yield* client
+    .SignUpRequest({
       email: "test@test.com",
       password: "test",
     })
-  ).pipe(
-    Effect.tapError((requestError) => Effect.log(requestError.errorMessage))
-  );
-});
+    .pipe(
+      Effect.tapError(
+        // 👇 `requestError` is the error type defined in `Rpc.make`
+        (requestError) => Effect.log(requestError.errorMessage)
+      )
+    );
+}).pipe(Effect.provide(RpcAuthClient.Default));
+
+Effect.runPromise(main);
