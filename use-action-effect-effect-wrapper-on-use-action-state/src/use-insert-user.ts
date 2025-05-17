@@ -10,14 +10,14 @@ import { useActionEffect } from "./use-action-effect";
 export const useInsertUser = () => {
   // 👇 Same return as `useActionState`
   const [{ error, data }, action, pending] = useActionEffect(
-    (fromData: FormData) =>
+    (formData: FormData) =>
       Effect.gen(function* () {
         const baseClient = yield* HttpClient.HttpClient;
 
         const request = HttpClientRequest.post("/user/insert").pipe(
           HttpClientRequest.bodyFormData(
             // 👇 `HttpBody.formData` to create a `FormData` body
-            HttpBody.formData(fromData)
+            HttpBody.formData(formData)
           )
         );
 
