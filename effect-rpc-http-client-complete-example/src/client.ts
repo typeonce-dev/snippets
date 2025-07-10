@@ -13,7 +13,7 @@ export class RpcAuthClient extends Effect.Service<RpcAuthClient>()(
   "RpcAuthClient",
   {
     dependencies: [ProtocolLive],
-    effect: RpcClient.make(RpcAuth).pipe(Effect.scoped),
+    scoped: RpcClient.make(RpcAuth),
   }
 ) {}
 
