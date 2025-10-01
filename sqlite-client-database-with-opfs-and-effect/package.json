@@ -1,0 +1,16 @@
+{
+  "author": "Sandro Maglione <sandro@sandromaglione.com>",
+  "license": "MIT",
+  "scripts": {
+    "openapi": "pnpx openapi-typescript ./src/schema.yaml -o ./src/schema.d.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@effect/sql": "^0.45.0",
+    "@effect/sql-sqlite-wasm": "^0.46.0",
+    "@effect/wa-sqlite": "^0.2.1",
+    "effect": "^3.17.14"
+  }
+}
